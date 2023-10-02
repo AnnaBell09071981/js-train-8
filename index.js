@@ -230,12 +230,23 @@ function copyAndSwapElements(arr, target, start, end) {
   // Перевіряємо, чи індекси належать межам масиву якщо ні виводимо рядок Неприпустимі індекси
   // Копіюємо та переставляємо елементи за допомогою методу `copyWithin`
   // Повертаємо модифікований масив
-  if(arr.indexOf(target, start, end) !== true) {
-    return "Неприпустимі індекси";
-  } else {
-    arr = arr.copyWithin(target, start, end);
+  if (
+    start < 0 ||
+    start >= arr.length ||
+    end < 0 ||
+    end > arr.length ||
+    target < 0 ||
+    target >= arr.length
+  ) {
+    console.log("Неприпустимі індекси");
     return arr;
   }
+
+  // Копіюємо та переставляємо елементи за допомогою методу `copyWithin`
+  arr.copyWithin(target, start, end);
+
+  // Повертаємо модифікований масив
+  return arr;
   
 }
 
@@ -386,15 +397,15 @@ console.log(customShift([1, 2, 3, 4, 5])); // Виведе { shiftedElement: 1, 
 function customUnshift(arr, ...elements) {
   // Перевіряємо, чи вхідний параметр є масивом
   if(Array.isArray(arr) !== true) {
-    return false;
+    return;
   }
   // Зберігаємо початкову довжину масиву в змінну initialLength
   let initialLength = arr.length;
   // Додаємо елементи на початок масиву за допомогою методу `unshift` та циклу for, початкове значення лічильника на 1 менше ніж довжина масива,
-  let newLength = 0;
-  for(let index = initialLength - 1; index >= 0; index--) {
-    newLength = arr.length;
+  for (let i = elements.length - 1; i >= 0; i--) {
+    arr.unshift(elements[i]);
   }
+  const newLength = arr.length;
   return { initialLength, newLength, arr};
   // при кожній ітерації лічильник зменшуємо на 1 та продовжуємо поки лічильник більше, або дорівнює нулю
   // Отримуємо нову довжину масиву
@@ -442,22 +453,24 @@ console.log(customSome([1, 2, 3, 4, 5], isEven));
 */
 function customAt(arr, index) {
   // Перевіряємо, чи вхідний параметр є масивом якщо ні повертаємо undefined
-  if(Array.isArray(arr) !== true) {
+  if(!Array.isArray(arr)) {
     return undefined;
   }
-  if(arr.includes(index) !== true) {
+  if (index < 0 || index >= arr.length) {
     return undefined;
   }
-  let result = arr.indexOf(index);
-  if(typeof result === toString()) {
-    return "Елемент є рядком";
+  const element = arr.at(index);
+  if(typeof element === "string") {
+    console.log("Елемент є рядком");
   }
-  if(typeof result === "number") {
-    return "Елемент є числом";
+  if(typeof element === "number") {
+    console.log("Елемент є числом");
   }
-  if(typeof result === Object) {
-    return "Елемент є об'єктом";
-  }  // Перевіряємо, чи індекс виходить за межі масиву якщо ні повертаємо undefined
+  if(typeof element === "object") {
+    console.log("Елемент є об'єктом");
+  } 
+  return element;
+  // Перевіряємо, чи індекс виходить за межі масиву якщо ні повертаємо undefined
   // Отримуємо елемент масиву за заданим індексом
   // перевіремо якого типу елемент ми отримали,якщо рядок виведом в консоль -Елемент є рядком,числом - Елемент є числом, об`єктом -Елемент є обєктом
 }
@@ -481,13 +494,17 @@ console.log(customAt([1, 2, 3, 4, 5], 2));
   */
 function customIncludes(arr, element) {
   // Перевіряємо, чи вхідний параметр є масивом
-  if(Array.isArray(arr) !== true) {
+  if(!Array.isArray(arr)) {
+    console.log("Помилка: Вхідний параметр має бути масивом.");
     return false;
   }
   // Використовуємо метод includes для перевірки наявності елемента в масиві
-  return arr.filter[element], arr.includes(element);
+  const result = arr.includes(element);
   // За допомогою методу filter перевіряємо скільки разів в масиві зустрічається елемент та виводимо число в консоль
+  const count = arr.filter((item) => item === element).length;
+  console.log(count);
   //Повертаємо результат
+  return result;
 }
 
 console.log("Завдання: 17 ==============================");
